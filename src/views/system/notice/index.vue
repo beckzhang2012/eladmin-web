@@ -108,8 +108,8 @@
         width="120"
       >
         <template slot-scope="scope">
-          <el-tag :type="dict.label.notice_type[scope.row.type]?.type || 'info'">
-            {{ dict.label.notice_type[scope.row.type]?.display_name || scope.row.type }}
+          <el-tag :type="dict.label.notice_type[scope.row.type] && dict.label.notice_type[scope.row.type].type || 'info'">
+            {{ dict.label.notice_type[scope.row.type] && dict.label.notice_type[scope.row.type].display_name || scope.row.type }}
           </el-tag>
         </template>
       </el-table-column>
@@ -172,8 +172,8 @@
         <div class="detail-header">
           <h3>{{ noticeDetail.title }}</h3>
           <span class="detail-time">{{ noticeDetail.createTime }}</span>
-          <el-tag :type="dict.label.notice_type[noticeDetail.type]?.type || 'info'">
-            {{ dict.label.notice_type[noticeDetail.type]?.display_name || noticeDetail.type }}
+          <el-tag :type="dict.label.notice_type[noticeDetail.type] && dict.label.notice_type[noticeDetail.type].type || 'info'">
+            {{ dict.label.notice_type[noticeDetail.type] && dict.label.notice_type[noticeDetail.type].display_name || noticeDetail.type }}
           </el-tag>
         </div>
         <div class="detail-content">
@@ -194,9 +194,9 @@
 </template>
 
 <script>
-import { crud } from '@/components/Crud/crud'
+import crud from '@/mixins/crud'
 import { getList, del, markRead, batchMarkRead, getDetail } from '@/api/system/notice'
-import CRUD, { presenter, header, form, pagination, crudOperation, rrOperation } from '@/crud/crud'
+import CRUD, { presenter, header, form, pagination, crudOperation, rrOperation } from '@/components/Crud/crud'
 
 const crudNotice = CRUD({ title: '通知', url: '/api/notice', sort: 'id,desc', crudMethod: { ...crud, getList, del }})
 
@@ -210,6 +210,13 @@ const defaultQuery = {
 export default {
   name: 'Notice',
   components: { pagination, crudOperation, rrOperation },
+  filters: {
+    truncate(value, length) {
+      if (!value) return ''
+      if (value.length <= length) return value
+      return value.substring(0, length) + '...'
+    }
+  },
   mixins: [presenter(), header(), form(), pagination(), crudNotice],
   data() {
     return {
@@ -231,13 +238,6 @@ export default {
         del: ['admin', 'notice:del'],
         markRead: ['admin', 'notice:markRead']
       }
-    }
-  },
-  filters: {
-    truncate(value, length) {
-      if (!value) return ''
-      if (value.length <= length) return value
-      return value.substring(0, length) + '...'
     }
   },
   created() {

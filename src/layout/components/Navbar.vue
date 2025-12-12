@@ -61,7 +61,7 @@ import Doc from '@/components/Doc'
 import Screenfull from '@/components/Screenfull'
 import SizeSelect from '@/components/SizeSelect'
 import Search from '@/components/HeaderSearch'
-import NoticeCenter from '@/components/NoticeCenter'
+import NoticeCenter from '@/components/NoticeCenter/NoticeCenter.vue'
 import Avatar from '@/assets/images/avatar.png'
 
 export default {

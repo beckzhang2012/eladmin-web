@@ -2,7 +2,7 @@
   <div class="notice-center">
     <el-dropdown trigger="click" @command="handleCommand">
       <div class="notice-btn">
-        <el-icon :size="20" color="#fff"><Bell /></el-icon>
+        <i class="el-icon-bell" style="font-size: 20px; color: #fff;" />
         <span v-if="unreadCount > 0" class="unread-badge">{{ unreadCount }}</span>
       </div>
       <el-dropdown-menu slot="dropdown" class="notice-dropdown">
@@ -28,14 +28,14 @@
               </div>
               <div class="notice-meta">
                 <span class="notice-time">{{ notice.createTime }}</span>
-                <el-tag :type="dict.label.notice_type[notice.type]?.type || 'info'" size="mini">
-                  {{ dict.label.notice_type[notice.type]?.display_name || notice.type }}
+                <el-tag :type="dict.label.notice_type[notice.type] && dict.label.notice_type[notice.type].type || 'info'" size="mini">
+                  {{ dict.label.notice_type[notice.type] && dict.label.notice_type[notice.type].display_name || notice.type }}
                 </el-tag>
               </div>
             </div>
           </el-dropdown-item>
           <div v-if="notices.length === 0" class="empty-notice">
-            <el-icon :size="40" color="#ccc"><Bell /></el-icon>
+            <i class="el-icon-bell" style="font-size: 40px; color: #ccc;" />
             <p>暂无通知</p>
           </div>
         </el-scrollbar>
@@ -52,12 +52,12 @@
 </template>
 
 <script>
-import { Bell } from '@element-plus/icons-vue'
+
 import { getList, markRead, batchMarkRead } from '@/api/system/notice'
 
 export default {
   name: 'NoticeCenter',
-  components: { Bell },
+
   filters: {
     truncate(value, length) {
       if (!value) return ''
