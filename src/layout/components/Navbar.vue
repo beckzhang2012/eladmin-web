@@ -12,6 +12,10 @@
           <Doc class="right-menu-item hover-effect" />
         </el-tooltip>
 
+        <el-tooltip content="消息中心" effect="dark" placement="bottom">
+          <notice-center class="right-menu-item hover-effect" />
+        </el-tooltip>
+
         <el-tooltip content="全屏缩放" effect="dark" placement="bottom">
           <screenfull id="screenfull" class="right-menu-item hover-effect" />
         </el-tooltip>
@@ -57,6 +61,7 @@ import Doc from '@/components/Doc'
 import Screenfull from '@/components/Screenfull'
 import SizeSelect from '@/components/SizeSelect'
 import Search from '@/components/HeaderSearch'
+import NoticeCenter from '@/components/NoticeCenter'
 import Avatar from '@/assets/images/avatar.png'
 
 export default {
@@ -66,7 +71,8 @@ export default {
     Screenfull,
     SizeSelect,
     Search,
-    Doc
+    Doc,
+    NoticeCenter
   },
   data() {
     return {
