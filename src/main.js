@@ -23,6 +23,7 @@ import router from './router/routers'
 
 import './assets/icons' // icon
 import './router/index' // permission control
+import websocket from './utils/websocket'
 
 Vue.use(checkPer)
 Vue.use(permission)
@@ -33,9 +34,17 @@ Vue.use(Element, {
 
 Vue.config.productionTip = false
 
-new Vue({
+const vm = new Vue({
   el: '#app',
   router,
   store,
   render: h => h(App)
+})
+
+// 保存全局引用
+window.vm = vm
+
+// 连接WebSocket
+vm.$nextTick(() => {
+  websocket.connect()
 })

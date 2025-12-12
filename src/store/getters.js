@@ -19,6 +19,7 @@ const getters = {
   s3UploadApi: state => state.api.s3UploadApi,
   sqlApi: state => state.api.sqlApi,
   swaggerApi: state => state.api.swaggerApi,
-  sidebarRouters: state => state.permission.sidebarRouters
+  sidebarRouters: state => state.permission.sidebarRouters,
+  unreadCount: state => state.message.unreadCount
 }
 export default getters
