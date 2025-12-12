@@ -42,5 +42,9 @@ module.exports = {
   /**
    * 备案号
    */
-  caseNumber: ''
+  caseNumber: '',
+  /**
+   * WebSocket地址
+   */
+  websocketUrl: process.env.VUE_APP_WS_API || 'ws://localhost:8080'
 }

@@ -5,6 +5,12 @@ import Cookies from 'js-cookie'
 import 'normalize.css/normalize.css'
 
 import Element from 'element-ui'
+import SockJS from 'sockjs-client'
+import Stomp from 'stompjs'
+
+// 全局挂载Stomp和SockJS
+Vue.prototype.$Stomp = Stomp
+Vue.prototype.$SockJS = SockJS
 
 // 数据字典
 import dict from './components/Dict'
