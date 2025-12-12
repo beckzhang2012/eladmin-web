@@ -20,6 +20,37 @@
           <size-select id="size-select" class="right-menu-item hover-effect" />
         </el-tooltip>
 
+        <el-tooltip content="个人中心" placement="bottom">
+          <router-link to="/profile" class="right-menu-item hover-effect">
+            <i class="el-icon-user" />
+          </router-link>
+        </el-tooltip>
+
+        <el-tooltip content="消息通知" effect="dark" placement="bottom">
+          <el-dropdown trigger="click" class="right-menu-item hover-effect message-notification">
+            <span class="el-dropdown-link notification-wrapper">
+              <i class="el-icon-bell" />
+              <el-badge :value="unreadCount" :hidden="unreadCount === 0" class="badge message-badge" />
+            </span>
+            <el-dropdown-menu slot="dropdown" class="message-dropdown">
+              <div class="message-header">
+                <span>消息通知</span>
+                <el-button size="mini" type="text" @click="markAllAsRead">标记全部已读</el-button>
+              </div>
+              <el-scrollbar style="height: 300px;">
+                <el-dropdown-item v-for="message in messages" :key="message.id" class="message-item" @click.native="markMessageAsRead(message.id)">
+                  <div class="message-content" :class="{ unread: !message.read }">
+                    <div class="message-title">{{ message.title }}</div>
+                    <div class="message-time">{{ message.createTime }}</div>
+                    <div class="message-text">{{ message.content }}</div>
+                  </div>
+                </el-dropdown-item>
+                <div v-if="messages.length === 0" class="no-message">暂无消息</div>
+              </el-scrollbar>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </el-tooltip>
+
       </template>
 
       <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
@@ -58,6 +89,7 @@ import Screenfull from '@/components/Screenfull'
 import SizeSelect from '@/components/SizeSelect'
 import Search from '@/components/HeaderSearch'
 import Avatar from '@/assets/images/avatar.png'
+import { getMessages, markMessageAsRead, markAllMessagesAsRead } from '@/api/message'
 
 export default {
   components: {
@@ -71,7 +103,9 @@ export default {
   data() {
     return {
       Avatar: Avatar,
-      dialogVisible: false
+      dialogVisible: false,
+      messages: [],
+      intervalId: null
     }
   },
   computed: {
@@ -79,7 +113,8 @@ export default {
       'sidebar',
       'device',
       'user',
-      'baseApi'
+      'baseApi',
+      'unreadCount'
     ]),
     show: {
       get() {
@@ -91,6 +126,19 @@ export default {
           value: val
         })
       }
+    }
+  },
+  mounted() {
+    this.getMessages()
+    this.getUnreadMessagesCount()
+    // 定时轮询获取未读消息数量
+    this.intervalId = setInterval(() => {
+      this.getUnreadMessagesCount()
+    }, 30000)
+  },
+  beforeDestroy() {
+    if (this.intervalId) {
+      clearInterval(this.intervalId)
     }
   },
   methods: {
@@ -109,6 +157,30 @@ export default {
     logout() {
       this.$store.dispatch('LogOut').then(() => {
         location.reload()
+      })
+    },
+    // 获取消息列表
+    getMessages() {
+      getMessages().then(res => {
+        this.messages = res.data
+      })
+    },
+    // 获取未读消息数量
+    getUnreadMessagesCount() {
+      this.$store.dispatch('message/getUnreadMessagesCount')
+    },
+    // 标记消息为已读
+    markMessageAsRead(id) {
+      markMessageAsRead(id).then(() => {
+        this.getMessages()
+        this.getUnreadMessagesCount()
+      })
+    },
+    // 标记所有消息为已读
+    markAllAsRead() {
+      markAllMessagesAsRead().then(() => {
+        this.getMessages()
+        this.getUnreadMessagesCount()
       })
     }
   }
@@ -193,6 +265,79 @@ export default {
           top: 25px;
           font-size: 12px;
         }
+      }
+    }
+
+    .message-notification {
+      .notification-wrapper {
+        position: relative;
+        display: inline-block;
+        padding: 0 15px;
+        cursor: pointer;
+        transition: background .3s;
+        &:hover {
+          background: rgba(0, 0, 0, 0.025);
+        }
+      }
+
+      .message-badge {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        transform: translate(50%, -50%);
+      }
+    }
+
+    .message-dropdown {
+      width: 350px;
+      padding: 0;
+
+      .message-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 20px;
+        border-bottom: 1px solid #f0f0f0;
+      }
+
+      .message-item {
+        padding: 15px 20px;
+        border-bottom: 1px solid #f0f0f0;
+        cursor: pointer;
+        transition: background .3s;
+
+        &:hover {
+          background: #f5f7fa;
+        }
+
+        .message-content {
+          .message-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+          }
+
+          .message-time {
+            font-size: 12px;
+            color: #909399;
+            margin-bottom: 5px;
+          }
+
+          .message-text {
+            font-size: 14px;
+            color: #606266;
+            line-height: 1.5;
+          }
+
+          &.unread {
+            background: #f5f7fa;
+          }
+        }
+      }
+
+      .no-message {
+        text-align: center;
+        padding: 20px;
+        color: #909399;
       }
     }
   }

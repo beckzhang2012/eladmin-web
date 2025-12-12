@@ -57,6 +57,20 @@ export const constantRouterMap = [
         meta: { title: '个人中心' }
       }
     ]
+  },
+  {
+    path: '/message',
+    component: Layout,
+    redirect: '/message/send',
+    meta: { title: '消息管理', icon: 'message', permission: ['admin'] },
+    children: [
+      {
+        path: 'send',
+        component: (resolve) => require(['@/views/message/send'], resolve),
+        name: 'SendMessage',
+        meta: { title: '发送消息', icon: 'send' }
+      }
+    ]
   }
 ]
 

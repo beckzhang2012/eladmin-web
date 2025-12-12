@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import getters from './getters'
+import message from './modules/message'
 
 Vue.use(Vuex)
 
@@ -18,7 +19,10 @@ const modules = modulesFiles.keys().reduce((modules, modulePath) => {
 }, {})
 
 const store = new Vuex.Store({
-  modules,
+  modules: {
+    ...modules,
+    message
+  },
   getters
 })
 
