@@ -45,6 +45,25 @@ export const constantRouterMap = [
     ]
   },
   {
+    path: '/system/message',
+    component: Layout,
+    redirect: 'noredirect',
+    children: [
+      {
+        path: 'list',
+        component: (resolve) => require(['@/views/system/message/index'], resolve),
+        name: 'MessageList',
+        meta: { title: '消息列表', icon: 'message', noCache: true }
+      },
+      {
+        path: 'send',
+        component: (resolve) => require(['@/views/system/message/send'], resolve),
+        name: 'MessageSend',
+        meta: { title: '发送消息', icon: 'edit', noCache: true }
+      }
+    ]
+  },
+  {
     path: '/user',
     component: Layout,
     hidden: true,
