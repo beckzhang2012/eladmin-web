@@ -1,0 +1,7 @@
+diff a/src/views/system/workflow/index.vue b/src/views/system/workflow/index.vue	(rejected hunks)
+@@ -66 +66 @@
+-          <el-switch v-model="scope.row.enabled" @change="changeEnabled(scope.row)" active-color="#409EFF" inactive-color="#F56C6C" />
++          <el-switch v-model="scope.row.enabled" active-color="#409EFF" inactive-color="#F56C6C" @change="changeEnabled(scope.row)" />
+@@ -94 +94 @@ export default {
+-    return CRUD({ title: '工作流', url: 'api/workflows', crudMethod: { add: crudWorkflow.addWorkflow, edit: crudWorkflow.editWorkflow, del: crudWorkflow.delWorkflow, get: crudWorkflow.getWorkflows } })
++    return CRUD({ title: '工作流', url: 'api/workflows', crudMethod: { add: crudWorkflow.addWorkflow, edit: crudWorkflow.editWorkflow, del: crudWorkflow.delWorkflow, get: crudWorkflow.getWorkflows }})

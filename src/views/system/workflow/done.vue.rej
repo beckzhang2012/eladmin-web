@@ -1,0 +1,4 @@
+diff a/src/views/system/workflow/done.vue b/src/views/system/workflow/done.vue	(rejected hunks)
+@@ -100 +100 @@ export default {
+-    return CRUD({ title: '我的已办', url: 'api/workflow/done', crudMethod: { get: crudWorkflow.getDoneTasks } })
++    return CRUD({ title: '我的已办', url: 'api/workflow/done', crudMethod: { get: crudWorkflow.getDoneTasks }})
